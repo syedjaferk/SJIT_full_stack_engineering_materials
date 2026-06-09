@@ -9,4 +9,4 @@ class Student(models.Model):
     age = models.IntegerField()
 
     def __str__(self):  # Overwriting the print object.
-        return str(self.name) + "_" + str(self.email)
+        return str(self.name)
