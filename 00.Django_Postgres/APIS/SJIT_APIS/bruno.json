@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "SJIT_APIS",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

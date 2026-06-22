@@ -1,0 +1,11 @@
+<h1>Delete Note</h1>
+
+<p> Are you sure you wanted to delete - 
+	{{ object.title }} <p>
+
+<form method="post">
+	{% csrf_token %}
+	<button type="submit">Confirm</button>
+</form>
+
+<a href="{% url 'list' %}">Cancel</a>

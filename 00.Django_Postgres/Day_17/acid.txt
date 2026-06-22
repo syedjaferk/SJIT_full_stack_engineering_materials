@@ -1,0 +1,65 @@
+Dirty Read:
+
+-- Transaction 1
+BEGIN;
+UPDATE accounts SET balance = balance - 100 WHERE account_id = 1;
+-- No COMMIT or ROLLBACK yet.
+
+-- Transaction 2
+BEGIN;
+SELECT balance FROM accounts WHERE account_id = 1;
+-- Reads the original balance (no dirty reads).
+COMMIT;
+
+
+Non Repeatable Read
+-- Transaction 1
+BEGIN;
+SELECT balance FROM accounts WHERE account_id = 1; -- Reads initial balance.
+
+-- Transaction 2
+BEGIN;
+UPDATE accounts SET balance = balance + 500 WHERE account_id = 1;
+COMMIT;
+
+-- Back to Transaction 1
+SELECT balance FROM accounts WHERE account_id = 1; -- Sees updated balance (non-repeatable read).
+COMMIT;
+
+
+-- Transaction 1
+BEGIN;
+SELECT * FROM accounts WHERE balance > 500; -- Returns 2 rows.
+
+-- Transaction 2
+BEGIN;
+INSERT INTO accounts (account_holder_name, balance) VALUES ('New User', 1000);
+COMMIT;
+
+-- Back to Transaction 1
+SELECT * FROM accounts WHERE balance > 500; -- Now returns 3 rows (phantom read).
+COMMIT;
+
+
+
+BEGIN ISOLATION LEVEL REPEATABLE READ;
+BEGIN ISOLATION LEVEL SERIALIZABLE;
+
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+
+    username VARCHAR(50) UNIQUE NOT NULL, 
+    email VARCHAR(100) UNIQUE NOT NULL, 
+    age INT CHECK (age >= 18),  
+    country VARCHAR(50) DEFAULT 'India', 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+Saranya R
+Jonah Blessy
+
+
+
+
